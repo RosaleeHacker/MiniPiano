@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
+    <title>Mini Piano instructable</title>
+  </head>
+  <body>
+  	<div class="cover-container">
+  		<img width="105%" src="cover.jpg">
+	  	<div class="cover-text"><h1>MiniPiano</h1></div>
+	  	<h3 class="cover-text2">A simple, basic piano made with Arduino</h3></div>
+  	</div>
+  	<div class="desc">
+	  <p>Ever wanted to be able to make a piano with a LightBlue Bean+, a few sensors and some code? Now you can! This device includes the LightBlue Bean+, Grove Board, buzzers, touch sensors and a button. This little Piano was inspirated by my lack of any ability to play a real instrument. I wanted to make a project that was music related, and making music from frequencies is pretty cool. </p>
+	  <p>This project includes 1 button, 5 touch sensors, and 5 buzzers. Each touch sensor is a different note on a pentatonic scale. Each buzzer is set to play 1 note. The button is set to the beginning of the classic song, Welcome to the Black Parade by My Chemical Romance.</p>
+	</div>
+
+	<video width="400" controls>
+  		<source src="video.mp4" type="video/mp4">
+	</video>
+
+	<video width="400" controls>
+  		<source src="video2.mp4" type="video/mp4">
+	</video>
+
+	<div class="parts">
+	  <h2>Parts List:</h2>
+	  	<ul>
+	  		<li><a href="https://store.punchthrough.com/collections/all/products/lightblue-bean-plus">LightBlue Bean+</a> ~$55</li>
+	  		<li><a href="https://store.punchthrough.com/collections/all/products/lightblue-bean-proto-board-pre-order">LightBlue Bean+ Grove Board</a> ~$14</li>
+	  		<li><a href="https://www.seeedstudio.com/Grove-ButtonP-p-1243.html">Grove - Button</a> ~$1.90</li>
+	  		<li><a href="https://www.seeedstudio.com/Grove-Buzzer-p-768.html">Grove - Buzzer</a>~$1.90 (5 count)</li>
+	  		<li><a href="https://www.seeedstudio.com/Grove-Touch-Sensor-p-747.html">Grove - Touch Sensor</a>~$3.90 (5 count)</li>
+	  	</ul>
+	  	<p>Total Cost Estimate: $99.90 + tax and shipping</p>
+	</div>
+	<div class="instructions">
+	  	<h2>Instructions:</h2>
+	  	<div class="instructions-container">
+			<div class='container'>
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='1.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>1. Gather all of your materials together.</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='2.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>2. Connect the LightBlue Bean+ with the Groove Board.</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+			
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='3.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>3. Connect your button in pin A3/A4.</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='4.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>4. Now to hook up all of the touch sensors. Place the first 3 in pins in A1/A2, A0/A1, D4/D5.</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='5.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>5. Put the last two touch sensors on the backside, in pins in D6/D7, D7/D8</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='6.jpg'>
+			    </div>
+			    <div class='copy'>
+			      <p>6. Put your buzzers in pins D1/D0, D2/D1, D3/D2, D3/D4, D5/D6.</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+
+			  <div class='col4'>
+			    <div class='image'>
+			      <img src='1.gif'>
+			    </div>
+			    <div class='copy'>
+			      <p>7. Turn on your LightBlue Bean+, upload your code and you're ready to make music!</p>
+			    </div>
+			    <div class='clear'></div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="parts">
+		<h2>Code</h2>
+	</div>
+	<div class="code-container">
+<pre class='code code-html'><label>variables</label><code>
+int button = A3; //analog pin 3
+int touch0 = A0; //analog pin 0
+int touch1 = A1; //analog pin 1
+int touch4 = 4; //digital D4/D5
+int touch6 = 6; //digital D6/D7
+int touch7 = 7; //digital D7/D8
+
+
+int speakerPin0 = 0; //digital D0/D1
+int speakerPin1 = 1; //digital D1/D2
+int speakerPin2 = 2; //digital D2/D3
+int speakerPin3 = 3; //digital D3/D4
+int speakerPin8 = 8; //digital D8/D9
+bool playing = false;
+
+int length = 11; //the number of notes
+String notes[] = {"G5","FS5","B5","E5","D5","G5","C4","B4","E5","A4","D5"};
+int beats[] = {4,2,2,4,2,2,4,2,2,4,4};
+int tempo = 300;
+struct color {
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+};
+</code></pre>
+
+<pre class='code code-html'><label>methods</label><code>
+void playTone(int tone, int duration,int speaker) {
+  for (long i=0; i < duration * 1000L; i += tone*2) {
+    digitalWrite(speaker,HIGH);
+    delayMicroseconds(tone);
+    digitalWrite(speaker,LOW);
+    delayMicroseconds(tone);
+  }
+}
+
+void playNote(String note, int duration) {
+  String names[] = {"G5","FS5","B5","E5","D5","C4","B4","A4","D5"};
+  int tones[] = {784,740,988,659,587,262,494,440,587};
+  color colors[] = {{255,0,0},{244,244,66},{66,182,244},{0,255,0},{143,66,244},{244,66,241},{146,244,66},{0,0,255}};
+
+  for(int i =0; i < 8; i++) {
+    if (names[i] == note) {
+      Bean.setLed(colors[i].r,colors[i].g,colors[i].b);
+      playTone(tones[i],duration,speakerPin0);
+      Bean.setLed(0,0,0);
+    }
+  }
+}
+</code></pre>
+
+<pre class='code code-html'><label>setup()</label><code>
+void setup() {
+  pinMode(button,INPUT);
+  pinMode(touch0,INPUT);
+  pinMode(touch1,INPUT); 
+  pinMode(touch4,INPUT);
+  pinMode(touch6,INPUT);
+  pinMode(touch7,INPUT);
+  pinMode(speakerPin0,OUTPUT);
+  pinMode(speakerPin1,OUTPUT);
+  pinMode(speakerPin2,OUTPUT);
+  pinMode(speakerPin3,OUTPUT);
+  pinMode(speakerPin8,OUTPUT);
+}
+</code></pre>
+
+<pre class='code code-html'><label>loop()</label><code>
+void loop() {
+  if(digitalRead(touch0) == 1) {
+    playTone(262,500,speakerPin0);
+    Bean.setLed(255,0,0);
+    playing = true;
+  }
+
+//NOTE D4
+  if(digitalRead(touch1) == 1) {
+    playTone(294,500,speakerPin1);
+    Bean.setLed(0,255,0);
+    playing = true;
+  }
+
+//NOTE E4
+  if(digitalRead(touch4) == 1) {
+    playTone(330,500,speakerPin2);
+    Bean.setLed(0,0,255);
+    playing = true;
+  }
+
+//NOTE G4
+  if(digitalRead(touch6) == 1) {
+    playTone(392,500,speakerPin3);
+    Bean.setLed(255,0,255);
+    playing = true;
+  }
+
+//NOTE A4
+  if(digitalRead(touch7) == 1) {
+    playTone(440,500,speakerPin8);
+    Bean.setLed(252, 93, 153);
+    playing = true;
+  }
+
+  for (int i = 0; i < length && digitalRead(button) == 1; i++) {
+    if (notes[i] == " ") {
+      Bean.setLed(0,0,0);
+      delay(beats[i]*tempo);
+    } else {
+      playNote(notes[i], beats[i]*tempo);
+    }    //pause between notes
+
+    delay(tempo/2);
+  }
+}
+</code></pre>
+	</div>
+	<div class="footer">
+		<h1>~Stay emo~</h1>
+		<img class="mcr" src="mcr.jpg">
+		<h5>By Rosalee Hacker</h5>
+	</div>
+  </body>
+</html>
